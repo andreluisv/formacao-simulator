@@ -8,9 +8,7 @@ class Semester extends React.Component {
   renderClasses() {
     return this.props.disciplines ? this.props.disciplines.map((data, index) => {
       return (
-        <div key={'semester-class-index'+index}>
-          <Class class={data}/>
-        </div>
+        <Class key={'semester-class-index' + index} class={data} />
       )
     }) : null;
   }
@@ -18,8 +16,8 @@ class Semester extends React.Component {
   render() {
 
     return (
-      <div style={{border:'1px solid black'}}>
-        <p>{this.props.semester??null}ºª Período</p>
+      <div style={{ border: '1px solid ' + (this.props.selected ? 'red' : 'black') }}>
+        <p>{this.props.semester ?? null}º Período</p>
         <div>
           {this.renderClasses()}
         </div>

@@ -4,6 +4,7 @@ class App extends React.Component {
         this.state = {
             name: 'Andre',
             course_progression: [],
+            selected_semester: -1,
             semesters: [],
             disciplines: [],
         }
@@ -22,9 +23,26 @@ class App extends React.Component {
     renderSemesters() {
         return this.state.semesters.map((semester, index) => {
             return (
-                <Semester key={'semester-field'+index} semester={index + 1} disciplines={semester.disciplines} />
+                <div key={'semester-field' + index} onClick={() => { this.setState({ selected_semester: index }) }}>
+                    <Semester selected={index == this.state.selected_semester} semester={index + 1} disciplines={semester.disciplines} />
+                    <button onClick={() => { this.removeSemester(index) }}>Trash</button>
+                </div>
             )
         })
+    }
+
+    addNewSemester() {
+        const arr = [...this.state.semesters];
+        arr.push({
+            disciplines: []
+        })
+        this.setState({ semesters: arr })
+    }
+
+    removeSemester(index) {
+        const arr = [...this.state.semesters];
+        arr.splice(index, 1);
+        this.setState({ semesters: arr, selected_semester: -1 })
     }
 
     render() {
@@ -33,6 +51,7 @@ class App extends React.Component {
                 <h2>Hello {this.state.name || 'Friend'}! Welcome Back!</h2>
                 <ResumoCargaHoraria progession={this.state.course_progression} />
                 <div>
+                    <button onClick={() => { this.addNewSemester() }}>New+</button>
                     {this.renderSemesters()}
                 </div>
                 <div>
