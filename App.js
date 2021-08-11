@@ -2,7 +2,6 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'Andre',
             course_progression: [
                 { name: 'Obrigatoria', total: 2355, attended: 0 },
                 { name: 'Eletiva Do Perfil', total: 750, attended: 0 },
@@ -14,32 +13,35 @@ class App extends React.Component {
         }
     }
 
-    mockData() {
-        this.setState({ disciplines: [{ code: 'IF669', name: 'INTRODUCAO A PROGRAMACAO', type: 'OBRIG', ch: 120, credits: 6, score: -1 }] });
+    fetchDisciplines() {
+        this.setState({ disciplines: classesJson });
     }
 
-    updateCourseProgession() {
+    componentDidMount() {
+        this.fetchDisciplines();
+    }
+
+    updateCourseProgession(inputArr) {
         let obrig = 0;
         let eleti = 0;
+        let eletiLivre = 0;
+        let arr = [...inputArr];
+        if (!arr) arr = [...this.state.semesters];
 
-        this.state.semesters.map((sem) => {
+        arr.map((sem) => {
             sem.disciplines.map((data) => {
                 if (data.type == 'OBRIG') obrig += data.ch;
                 else if (data.type == 'ELETI') eleti += data.ch;
+                else if (data.type == 'OUTRO') eletiLivre += data.ch;
             })
         })
-        console.log(obrig, eleti);
         this.setState({
             course_progression: [
                 { name: 'Obrigatoria', total: 2355, attended: obrig },
                 { name: 'Eletiva Do Perfil', total: 750, attended: eleti },
-                { name: 'Eletiva Livre', total: 390, attended: 0 }
+                { name: 'Eletiva Livre', total: 390, attended: eletiLivre }
             ]
         })
-    }
-
-    componentDidMount() {
-        this.mockData();
     }
 
     renderSemesters() {
@@ -70,7 +72,7 @@ class App extends React.Component {
         arrSemester[this.state.selected_semester].disciplines.push(arrDisciplines[index]);
         arrDisciplines.splice(index, 1);
         this.setState({ semesters: arrSemester, disciplines: arrDisciplines });
-        this.updateCourseProgession();
+        this.updateCourseProgession(arrSemester);
     }
 
     addNewSemester() {
@@ -80,16 +82,19 @@ class App extends React.Component {
     }
 
     removeSemester(index) {
-        const arr = [...this.state.semesters];
-        arr.splice(index, 1);
-        this.setState({ semesters: arr, selected_semester: -1 });
-        this.updateCourseProgession();
+        const arrSemester = [...this.state.semesters];
+        const arrDisciplines = [...this.state.disciplines];
+        const removed = arrSemester.splice(index, 1)[0];
+        removed.disciplines.map((cl)=>{
+            arrDisciplines.push(cl);
+        })
+        this.setState({ semesters: arrSemester, selected_semester: -1, disciplines: arrDisciplines });
+        this.updateCourseProgession(arrSemester);
     }
 
     render() {
         return (
             <>
-                <h2>Hello {this.state.name || 'Friend'}! Welcome Back!</h2>
                 <ResumoCargaHoraria progession={this.state.course_progression} />
                 <div>
                     <button onClick={() => { this.addNewSemester() }}>New+</button>
