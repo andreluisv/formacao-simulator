@@ -31,18 +31,35 @@ class App extends React.Component {
         })
     }
 
+    renderDisciplines() {
+        return this.state.disciplines.map((data, index) => {
+            return (
+                <div key={'disciplines-field' + index} onClick={() => { this.addDisciplineToSemester(index) }}>
+                    <Class class={data} />
+                </div>
+            )
+        })
+    }
+
+    addDisciplineToSemester(index) {
+        const arrSemester = [...this.state.semesters];
+        const arrDisciplines = [...this.state.disciplines];
+        if (!(this.state.selected_semester >= 0 && this.state.selected_semester < arrSemester.length)) return;
+        arrSemester[this.state.selected_semester].disciplines.push(arrDisciplines[index]);
+        arrDisciplines.splice(index, 1);
+        this.setState({ semesters: arrSemester, disciplines: arrDisciplines });
+    }
+
     addNewSemester() {
         const arr = [...this.state.semesters];
-        arr.push({
-            disciplines: []
-        })
-        this.setState({ semesters: arr })
+        arr.push({ disciplines: [] });
+        this.setState({ semesters: arr });
     }
 
     removeSemester(index) {
         const arr = [...this.state.semesters];
         arr.splice(index, 1);
-        this.setState({ semesters: arr, selected_semester: -1 })
+        this.setState({ semesters: arr, selected_semester: -1 });
     }
 
     render() {
@@ -55,7 +72,7 @@ class App extends React.Component {
                     {this.renderSemesters()}
                 </div>
                 <div>
-                    <Class class={this.state.disciplines[0]} />
+                    {this.renderDisciplines()}
                 </div>
             </>
         )
