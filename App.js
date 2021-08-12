@@ -10,6 +10,13 @@ class App extends React.Component {
             selected_semester: -1,
             semesters: [],
             disciplines: [],
+            newClass: {
+                code: '',
+                name: '',
+                type: '',
+                ch: 0,
+                credits: 0,
+            }
         }
     }
 
@@ -35,11 +42,15 @@ class App extends React.Component {
                 else if (data.type == 'OUTRO') eletiLivre += data.ch;
             })
         })
+
+        if (eleti > 750) {
+            eletiLivre += eleti - 750;
+        }
         this.setState({
             course_progression: [
-                { name: 'Obrigatoria', total: 2355, attended: obrig },
-                { name: 'Eletiva Do Perfil', total: 750, attended: eleti },
-                { name: 'Eletiva Livre', total: 390, attended: eletiLivre }
+                { name: 'Obrigatoria', total: 2355, attended: Math.min(obrig, 2355) },
+                { name: 'Eletiva Do Perfil', total: 750, attended: Math.min(eleti, 750) },
+                { name: 'Eletiva Livre', total: 390, attended: Math.min(eletiLivre, 390) }
             ]
         })
     }
@@ -97,11 +108,79 @@ class App extends React.Component {
             <>
                 <ResumoCargaHoraria progession={this.state.course_progression} />
                 <div>
-                    <button onClick={() => { this.addNewSemester() }}>New+</button>
-                    <button onClick={() => { this.removeSemester(this.state.selected_semester) }}>Remove Selected</button>
+                    <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>
+                    <button onClick={() => { this.removeSemester(this.state.selected_semester) }}>Remover Periodo selecionado</button>
                     {this.renderSemesters()}
                 </div>
                 <div>
+                    <div>
+                        <form onSubmit={(event) => {
+                            event.preventDefault();
+                            const arrDisciplines = [...this.state.disciplines];
+                            const Class = this.state.newClass;
+                            arrDisciplines.push({ "code": Class.code, "name": this.state.newClass.name, "type": Class.type, "ch": Class.ch, "credits": Class.credits, "score": -1 });
+                            this.setState({ disciplines: arrDisciplines });
+                        }}>
+                            <input
+                                onChange={(event) => {
+                                    const newClass = { ...this.state.newClass };
+                                    newClass.code = event.target.value;
+                                    this.setState({ newClass: newClass })
+                                }}
+                                value={this.state.newClass.code}
+                                id="code-field"
+                                type="text"
+                                placeholder="Código"
+                                name="code"
+                            />
+                            <input
+                                onChange={(event) => {
+                                    const newClass = { ...this.state.newClass };
+                                    newClass.name = event.target.value;
+                                    this.setState({ newClass: newClass })
+                                }}
+                                value={this.state.newClass.name}
+                                id="name-field"
+                                type="text"
+                                placeholder="Título"
+                                name="name"
+                            />
+                            <input
+                                onChange={(event) => {
+                                    const newClass = { ...this.state.newClass };
+                                    newClass.ch = event.target.value;
+                                    this.setState({ newClass: newClass })
+                                }}
+                                value={this.state.newClass.ch}
+                                id="ch-field"
+                                type="number"
+                                placeholder="Carga Horária"
+                                name="ch"
+                            />
+                            <input
+                                onChange={(event) => {
+                                    const newClass = { ...this.state.newClass };
+                                    newClass.credits = event.target.value;
+                                    this.setState({ newClass: newClass })
+                                }}
+                                value={this.state.newClass.credits}
+                                id="credits-field"
+                                type="number"
+                                placeholder="Créditos"
+                                name="credits"
+                            />
+                            <select value={this.state.newClass.type} onChange={(event) => {
+                                const newClass = { ...this.state.newClass };
+                                newClass.type = event.target.value;
+                                this.setState({ newClass: newClass })
+                            }}>
+                                <option value="OBRIG">Obrigatoria</option>
+                                <option value="ELETI">Eletiva De Perfil</option>
+                                <option value="OUTRO">Eletiva Livre</option>
+                            </select>
+                            <button className="form-field" type="submit">Adicionar</button>
+                        </form>
+                    </div>
                     {this.renderDisciplines()}
                 </div>
             </>
