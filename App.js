@@ -13,7 +13,7 @@ class App extends React.Component {
             newClass: {
                 code: '',
                 name: '',
-                type: '',
+                type: 'OBRIG',
                 ch: 0,
                 credits: 0,
             }
@@ -34,12 +34,12 @@ class App extends React.Component {
         let eletiLivre = 0;
         let arr = [...inputArr];
         if (!arr) arr = [...this.state.semesters];
-
         arr.map((sem) => {
             sem.disciplines.map((data) => {
-                if (data.type == 'OBRIG') obrig += data.ch;
-                else if (data.type == 'ELETI') eleti += data.ch;
-                else if (data.type == 'OUTRO') eletiLivre += data.ch;
+                const ch = parseInt(data.ch);
+                if (data.type == 'OBRIG') obrig += ch;
+                else if (data.type == 'ELETI') eleti += ch;
+                else if (data.type == 'OUTRO') eletiLivre += ch;
             })
         })
 
@@ -110,7 +110,9 @@ class App extends React.Component {
                 <div>
                     <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>
                     <button onClick={() => { this.removeSemester(this.state.selected_semester) }}>Remover Periodo selecionado</button>
-                    {this.renderSemesters()}
+                    <div className='semesters-container'>
+                        {this.renderSemesters()}
+                    </div>
                 </div>
                 <div>
                     <div>
@@ -181,7 +183,9 @@ class App extends React.Component {
                             <button className="form-field" type="submit">Adicionar</button>
                         </form>
                     </div>
-                    {this.renderDisciplines()}
+                    <div className='classes-container'>
+                        {this.renderDisciplines()}
+                    </div>
                 </div>
             </>
         )

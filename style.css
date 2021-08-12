@@ -1,0 +1,19 @@
+.simulator{
+  width: 100%;
+  height: 100%;
+}
+
+.semesters-container{
+  display: flex;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.semester-box{
+  min-width: 500px;
+}
+
+.classes-container{
+  max-height: 500px;
+  overflow-y: auto;
+}

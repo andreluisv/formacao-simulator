@@ -16,7 +16,7 @@ class Semester extends React.Component {
   render() {
 
     return (
-      <div style={{ border: '1px solid ' + (this.props.selected ? 'red' : 'black') }}>
+      <div style={{ border: '1px solid ' + (this.props.selected ? 'red' : 'black') }} className='semester-box'>
         <p>{this.props.semester ?? null}º Período</p>
         <div>
           {this.renderClasses()}

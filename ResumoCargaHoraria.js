@@ -23,8 +23,8 @@ class ResumoCargaHoraria extends React.Component {
 
     return (
       <div>
-        <p>Resumo Carga Horária</p>
-        <table id='resumo-carga-horaria'>
+        <h3>Resumo Carga Horária</h3>
+        <table id='resumo-carga-horaria' style={{ border: '1px solid black'}}>
           <tbody>
             <tr>
               <td>Nome</td>
