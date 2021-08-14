@@ -61,6 +61,7 @@ class App extends React.Component {
                 <div key={'semester-field' + index} onClick={() => { this.setState({ selected_semester: index }) }}>
                     <Semester
                         removeClassFn={(data) => { this.removeClassFromSemester(data, index) }}
+                        removeThis={() => { this.removeSemester(index) }}
                         selected={index == this.state.selected_semester}
                         semester={index + 1} disciplines={semester.disciplines}
                     />
@@ -128,7 +129,6 @@ class App extends React.Component {
                 <ResumoCargaHoraria progession={this.state.course_progression} />
                 <div>
                     <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>
-                    <button onClick={() => { this.removeSemester(this.state.selected_semester) }}>Remover Periodo selecionado</button>
                     <div className='semesters-container'>
                         {this.renderSemesters()}
                     </div>

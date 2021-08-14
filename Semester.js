@@ -21,7 +21,7 @@ class Semester extends React.Component {
 
     return (
       <div style={{ border: '1px solid ' + (this.props.selected ? 'red' : 'black') }} className='semester-box'>
-        <p>{this.props.semester ?? null}º Período</p>
+        <p>{this.props.semester ?? null}º Período</p> <button onClick={() => { this.props.removeThis() }}>Del</button>
         <div>
           {this.renderClasses()}
         </div>
