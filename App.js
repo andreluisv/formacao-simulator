@@ -9,7 +9,8 @@ class App extends React.Component {
             ],
             selected_semester: -1,
             semesters: [],
-            disciplines: []
+            disciplines: [],
+            disciplines_filter: '',
         }
     }
 
@@ -65,6 +66,7 @@ class App extends React.Component {
 
     renderDisciplines() {
         return this.state.disciplines.map((data, index) => {
+            if (!data.name.toLowerCase().includes(this.state.disciplines_filter)) return null;
             return (
                 <div key={'disciplines-field' + index} onClick={() => { this.addDisciplineToSemester(index) }}>
                     <Class class={data} />
@@ -134,6 +136,17 @@ class App extends React.Component {
                 </div>
                 <div>
                     <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} />
+                    <input
+                        onChange={(event) => {
+                            const title = event.target.value;
+                            this.setState({ disciplines_filter: title })
+                        }}
+                        value={this.state.disciplines_filter}
+                        id="disciplines_filter-field"
+                        type="text"
+                        placeholder="Filtre por Título"
+                        name="disciplines_filter"
+                    />
                     <div className='classes-container'>
                         {this.renderDisciplines()}
                     </div>
