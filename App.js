@@ -59,7 +59,11 @@ class App extends React.Component {
         return this.state.semesters.map((semester, index) => {
             return (
                 <div key={'semester-field' + index} onClick={() => { this.setState({ selected_semester: index }) }}>
-                    <Semester selected={index == this.state.selected_semester} semester={index + 1} disciplines={semester.disciplines} />
+                    <Semester
+                        removeClassFn={(data) => { this.removeClassFromSemester(data, index) }}
+                        selected={index == this.state.selected_semester}
+                        semester={index + 1} disciplines={semester.disciplines}
+                    />
                 </div>
             )
         })
@@ -103,9 +107,24 @@ class App extends React.Component {
         this.updateCourseProgession(arrSemester);
     }
 
+    removeClassFromSemester(classData, semesterIndex) {
+        const arrSemester = [...this.state.semesters];
+        const arrDisciplines = [...this.state.disciplines];
+        if (!(semesterIndex >= 0 && semesterIndex < arrSemester.length)) return;
+
+        const idx = arrSemester[semesterIndex].disciplines.findIndex((clss) => clss.code == classData.code && clss.name == classData.name);
+        if (idx == -1) return;
+        arrDisciplines.push(classData);
+        arrSemester[semesterIndex].disciplines.splice(idx, 1);
+
+        this.setState({ semesters: arrSemester, selected_semester: -1, disciplines: arrDisciplines });
+        this.updateCourseProgession(arrSemester);
+    }
+
     render() {
         return (
             <>
+                {/*<Class fn={(name)=>{this.setState({name:'Outro'})}}class={{ "code": 'Class.code', "name": 'name', "type": 'type', "ch": 1, "credits": 1, "score": -1 }} />*/}
                 <ResumoCargaHoraria progession={this.state.course_progression} />
                 <div>
                     <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>

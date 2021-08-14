@@ -8,7 +8,11 @@ class Semester extends React.Component {
   renderClasses() {
     return this.props.disciplines ? this.props.disciplines.map((data, index) => {
       return (
-        <Class key={'semester-class-index' + index} class={data} />
+        <Class
+          removeFn={(classData) => { if (this.props.removeClassFn) this.props.removeClassFn(classData) }}
+          key={'semester-class-index' + index}
+          class={data}
+        />
       )
     }) : null;
   }
