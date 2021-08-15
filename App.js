@@ -127,28 +127,28 @@ class App extends React.Component {
     render() {
         return (
             <>
-                <ResumoCargaHoraria progession={this.state.course_progression} />
-                <div>
-                    <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>
-                    <div className='semesters-container'>
-                        {this.renderSemesters()}
+                <div className="sidenav">
+                    <div className="sidenav-header">
+                        <h2>Formacao Simulator</h2>
+                        <ResumoCargaHoraria progession={this.state.course_progression} />
+                    </div>
+                    <div className="sidenav-body">
+                        <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: event.target.value }) }} />
+                        <div className='classes-container'>
+                            {this.renderDisciplines()}
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} />
-                    <input
-                        onChange={(event) => {
-                            const title = event.target.value;
-                            this.setState({ disciplines_filter: title })
-                        }}
-                        value={this.state.disciplines_filter}
-                        id="disciplines_filter-field"
-                        type="text"
-                        placeholder="Filtre por Título"
-                        name="disciplines_filter"
-                    />
-                    <div className='classes-container'>
-                        {this.renderDisciplines()}
+                <div className="main">
+                    <div>
+                        <button onClick={() => { this.addNewSemester() }}>Novo periodo</button>
+                        <div className='semesters-container'>
+                            {this.renderSemesters()}
+                        </div>
+                    </div>
+                    <div>
+                        <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} />
+
                     </div>
                 </div>
             </>
