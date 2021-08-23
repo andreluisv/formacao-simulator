@@ -17,7 +17,7 @@ class SearchAndAddBar extends React.Component {
           placeholder="Filtre por Título"
           name="disciplines_filter"
         />
-      <button onClick={this.props.toggleFormView}>\/</button>
+      <button onClick={this.props.toggleFormView}>{this.props.isToggled ? '/\\' : '\\/'}</button>
       </div>
     )
   }

@@ -131,7 +131,7 @@ class App extends React.Component {
                 <div className="sidenav">
                     <h2>Formacao Simulator</h2>
                     <ResumoCargaHoraria progession={this.state.course_progression} />
-                    <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: event.target.value }) }} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
+                    <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: event.target.value }) }} isToggled={this.state.showNewClassInputForm} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
                     {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
                     <div className='classes-container'>
                         {this.renderDisciplines()}
