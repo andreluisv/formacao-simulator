@@ -11,6 +11,7 @@ class App extends React.Component {
             semesters: [],
             disciplines: [],
             disciplines_filter: '',
+            showNewClassInputForm: true,
         }
     }
 
@@ -120,23 +121,20 @@ class App extends React.Component {
     addNewDiscipline(classData) {
         const arrDisciplines = [...this.state.disciplines];
         const Class = classData;
-        arrDisciplines.push({ "code": Class.code, "name": Class.name, "type": Class.type, "ch": Class.ch, "credits": Class.credits, "score": -1 });
-        this.setState({ disciplines: arrDisciplines });
+        const adc = { "code": Class.code, "name": Class.name, "type": Class.type, "ch": Class.ch, "credits": Class.credits, "score": -1 };
+        this.setState({ disciplines: [adc].concat(arrDisciplines) });
     }
 
     render() {
         return (
             <>
                 <div className="sidenav">
-                    <div className="sidenav-header">
-                        <h2>Formacao Simulator</h2>
-                        <ResumoCargaHoraria progession={this.state.course_progression} />
-                    </div>
-                    <div className="sidenav-body">
-                        <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: event.target.value }) }} />
-                        <div className='classes-container'>
-                            {this.renderDisciplines()}
-                        </div>
+                    <h2>Formacao Simulator</h2>
+                    <ResumoCargaHoraria progession={this.state.course_progression} />
+                    <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: event.target.value }) }} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
+                    {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
+                    <div className='classes-container'>
+                        {this.renderDisciplines()}
                     </div>
                 </div>
                 <div className="main">
@@ -145,10 +143,6 @@ class App extends React.Component {
                         <div className='semesters-container'>
                             {this.renderSemesters()}
                         </div>
-                    </div>
-                    <div>
-                        <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} />
-
                     </div>
                 </div>
             </>

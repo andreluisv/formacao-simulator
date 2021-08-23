@@ -17,7 +17,7 @@ class SearchAndAddBar extends React.Component {
           placeholder="Filtre por Título"
           name="disciplines_filter"
         />
-        <button>+</button>
+      <button onClick={this.props.toggleFormView}>\/</button>
       </div>
     )
   }
