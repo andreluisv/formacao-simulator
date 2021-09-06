@@ -89,7 +89,7 @@ class App extends React.Component {
     addNewSemester() {
         const arr = [...this.state.semesters];
         arr.push({ disciplines: [] });
-        this.setState({ semesters: arr });
+        this.setState({ semesters: arr, selected_semester: arr.length-1 });
     }
 
     removeSemester(index) {
