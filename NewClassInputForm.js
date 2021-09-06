@@ -15,8 +15,8 @@ class NewClassInputForm extends React.Component {
   render() {
     if (!this.props.addNewDiscipline) return null;
     return (
-      <div className="newClassInputForm">
-        <form onSubmit={(event) => {
+      <div className="new-class-container">
+        <form className="new-class-form-container" onSubmit={(event) => {
           event.preventDefault();
           this.props.addNewDiscipline(this.state.newClass);
         }}>
@@ -79,9 +79,7 @@ class NewClassInputForm extends React.Component {
               <option value="OUTRO">Eletiva Livre</option>
             </select>
           </div>
-          <div>
-            <button className="form-field mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit">+</button>
-          </div>
+          <button className="submitNewClassForm" type="submit">+</button>
         </form>
       </div>
     )

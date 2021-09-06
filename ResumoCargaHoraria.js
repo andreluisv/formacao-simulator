@@ -22,8 +22,8 @@ class ResumoCargaHoraria extends React.Component {
   render() {
 
     return (
-      <div>
-        <table id='resumo-carga-horaria' style={{ border: '1px solid black'}}>
+      <div className="resumo-carga-horaria-container">
+        <table id='resumo-carga-horaria' className="tableCH">
           <tbody>
             <tr>
               <td>Nome</td>
