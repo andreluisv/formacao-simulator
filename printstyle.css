@@ -1,0 +1,60 @@
+html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  display: none;
+}
+
+.semesters-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.class-box {
+  position: relative;
+  border: 1px solid black;
+  width: 300px;
+  height: 50px;
+  margin: 5px;
+  text-align: left;
+}
+
+.class-box-top {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.class-box-top-right {
+  border: 0.5px solid black;
+}
+
+.new-class-form-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.semester-box {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 350px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.classesRenderContainer {
+  max-height: 75%;
+  overflow-y: hidden;
+}
+
+.semester-info {
+  text-align: left;
+}

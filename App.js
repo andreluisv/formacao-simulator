@@ -35,6 +35,18 @@ class App extends React.Component {
         localStorage.setItem('formacao-simulator-state', JSON.stringify(this.state))
     }
 
+    printDocument() {
+        var semesters = document.getElementById("semesters-div").innerHTML;
+        var a = window.open('', '');
+        a.document.write('<html>');
+        a.document.write('<head><link rel="stylesheet" href="printstyle.css" /></head>')
+        a.document.write('<body ><div class="semesters-container">');
+        a.document.write(semesters);
+        a.document.write('</div></body></html>');
+        a.document.close();
+        a.print();
+    }
+
     updateCourseProgession(inputArr) {
         let obrig = 0;
         let eleti = 0;
@@ -148,6 +160,7 @@ class App extends React.Component {
                         <h1>Formação Simulator</h1>
                         <span>By: André Vasconcelos </span>
                         <span className="header-save-btn" onClick={() => {this.saveCurrentState()}}>💾</span>
+                        <span className="header-save-btn" onClick={() => {this.printDocument()}}>🖨️</span>
                     </div>
                     <div className="contact-list">
                         <a href="https://github.com/andreluisv/formacao-simulator" target="_blank">
@@ -173,7 +186,7 @@ class App extends React.Component {
                 </div>
                 <hr />
                 <div className="main">
-                    <div className='semesters-container'>
+                    <div className='semesters-container' id="semesters-div">
                         {this.renderSemesters()}
                     </div>
                 </div>
