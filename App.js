@@ -12,11 +12,12 @@ class App extends React.Component {
             disciplines: [],
             disciplines_filter: '',
             showNewClassInputForm: false,
+            showDropdown: false
         }
     }
 
     fetchDisciplines() {
-        this.setState({ disciplines: classesJson });
+        this.setState({ disciplines: classesJson});
     }
 
     componentDidMount() {
@@ -32,7 +33,10 @@ class App extends React.Component {
     }
 
     saveCurrentState() {
-        localStorage.setItem('formacao-simulator-state', JSON.stringify(this.state))
+        this.setState({showDropdown: false});
+        const state = this.state;
+        state.showDropdown = false;
+        localStorage.setItem('formacao-simulator-state', JSON.stringify(state))
     }
 
     printDocument() {
@@ -93,7 +97,7 @@ class App extends React.Component {
         return this.state.disciplines.map((data, index) => {
             if (!data.name.toLowerCase().includes(this.state.disciplines_filter)) return null;
             return (
-                <div key={'disciplines-field' + index} >
+                <div className = "disciplines-field" key={'disciplines-field' + index} >
                     <Class class={data} index={index} addDiscipline={(i) => { this.addDisciplineToSemester(i) }} />
                 </div>
             )
@@ -142,6 +146,11 @@ class App extends React.Component {
         this.updateCourseProgession(arrSemester);
     }
 
+    setDropdown() {
+        const dropdownButton = this.state.showDropdown;
+        this.setState({showDropdown: !dropdownButton});
+    }
+
     addNewDiscipline(classData) {
         const arrDisciplines = [...this.state.disciplines];
         const Class = classData;
@@ -153,16 +162,77 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="containerBox">
                 <button className="newSemesterButton" onClick={() => { this.addNewSemester() }}>➕</button>
                 <div className="header">
-                    <div className="header-logo">
-                        <h1>Formação Simulator</h1>
-                        <span>By: André Vasconcelos </span>
-                        <span className="header-save-btn" onClick={() => {this.saveCurrentState()}}>💾</span>
-                        <span className="header-save-btn" onClick={() => {this.printDocument()}}>🖨️</span>
+                    <div className = "dropdown">
+                            <h3> Disciplinas </h3>
+                            <div className="sidebar-container">
+                            <span className="header-save-btn" onClick={() => {this.saveCurrentState()}}>💾</span>
+                            <span className="header-save-btn" onClick={() => {this.printDocument()}}>🖨️</span>
+                            <div id="sidebar">
+                                    <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: (event.target.value||'').toLowerCase() }) }} isToggled={this.state.showNewClassInputForm} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
+                                        {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
+                                    <div className='classes-container'>
+                                        {this.renderDisciplines()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div className = "fixed-header-container">
+                        <div className = "fixed-header">
+                            <div className="header-logo" id="sidebar-menu">
+                            
+                            {this.state.showDropdown ? 
+                                <svg class="dropdown-icon" onClick={() => {this.setDropdown()}} xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24" width="32">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                    </svg> : 
+                                <svg class="dropdown-icon" onClick={() => {this.setDropdown()}} xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24" width="32">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+                                </svg>
+                            }
+
+                            {this.state.showDropdown ? 
+                            
+                            <div className="menu">
+                                <div className = "sidebar-options">
+                                    <h3> Disciplinas </h3>
+                                    <div className="sidebar-container">
+                                        <div>
+                                            <span className="header-save-btn" onClick={() => {this.saveCurrentState()}}>💾</span>
+                                            <span className="header-save-btn" onClick={() => {this.printDocument()}}>🖨️</span>
+                                        </div>
+                                        <div id="sidebar">
+                                            <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: (event.target.value||'').toLowerCase() }) }} isToggled={this.state.showNewClassInputForm} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
+                                                {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
+                                            <div className='classes-container'>
+                                                {this.renderDisciplines()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {this.renderDisciplines()}
+                            </div> : 
+                            null
+                            }
+
+                            </div>
+                            <div className="header-logo">
+                                <h1>Formação Simulator</h1>
+                            </div>
+                        </div>
+                            <div className="main">
+                                <ResumoCargaHoraria progession={this.state.course_progression} />
+                                <div className='semesters-container' id="semesters-div">
+                                    {this.renderSemesters()}
+                                </div>  
+                            </div>
                     </div>
-                    <div className="contact-list">
+                </div>
+                <div className="footer">
+                <div className="contact-list">
                         <a href="https://github.com/andreluisv/formacao-simulator" target="_blank">
                             <svg height="42" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="42" data-view-component="true" >
                                 <title>Github</title>
@@ -181,22 +251,7 @@ class App extends React.Component {
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
                         </a>
-                    </div>
-                    <ResumoCargaHoraria progession={this.state.course_progression} />
                 </div>
-                <hr />
-                <div className="main">
-                    <div className='semesters-container' id="semesters-div">
-                        {this.renderSemesters()}
-                    </div>
-                </div>
-                <hr />
-                <div className="footer">
-                    <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: (event.target.value||'').toLowerCase() }) }} isToggled={this.state.showNewClassInputForm} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
-                    {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
-                    <div className='classes-container'>
-                        {this.renderDisciplines()}
-                    </div>
                 </div>
             </div>
         )
