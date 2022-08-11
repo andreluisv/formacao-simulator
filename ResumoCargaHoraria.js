@@ -29,6 +29,7 @@ class ResumoCargaHoraria extends React.Component {
               <td>Nome</td>
               <td>Integralização</td>
               <td>Cursada</td>
+              <td>%</td>
             </tr>
             {this.renderTableData()}
           </tbody>
