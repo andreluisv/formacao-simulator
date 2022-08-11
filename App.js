@@ -168,8 +168,6 @@ class App extends React.Component {
                     <div className = "dropdown">
                             <h3> Disciplinas </h3>
                             <div className="sidebar-container">
-                            <span className="header-save-btn" onClick={() => {this.saveCurrentState()}}>💾</span>
-                            <span className="header-save-btn" onClick={() => {this.printDocument()}}>🖨️</span>
                             <div id="sidebar">
                                     <SearchAndAddBar value={this.state.disciplines_filter} onChange={(event) => { this.setState({ disciplines_filter: (event.target.value||'').toLowerCase() }) }} isToggled={this.state.showNewClassInputForm} toggleFormView={() => { this.setState({ showNewClassInputForm: !this.state.showNewClassInputForm }) }} />
                                         {this.state.showNewClassInputForm ? <NewClassInputForm addNewDiscipline={(data) => { this.addNewDiscipline(data) }} /> : null}
@@ -219,8 +217,15 @@ class App extends React.Component {
                             }
 
                             </div>
-                            <div className="header-logo">
-                                <h1>Formação Simulator</h1>
+                            <div className="header-logo" style={{display: 'flex', flexDirection: 'column', paddingRight: '5px'}}>
+                                <h1 style={{padding: 0}}>Formação Simulator</h1>
+                                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <div>
+                                        <span className="header-save-btn" style={{fontSize: '25px', marginRight: '5px'}} onClick={() => {this.saveCurrentState()}}>💾</span>
+                                        <span className="header-save-btn" style={{fontSize: '25px'}} onClick={() => {this.printDocument()}}>🖨️</span>
+                                    </div>
+                                    <span style={{textAlign: 'end'}}>By: André Vasconcelos </span>
+                                </div>
                             </div>
                         </div>
                             <div className="main">
